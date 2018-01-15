@@ -24,7 +24,7 @@ SLACK_API_TOKEN=""
 SLACK_CHANNEL="#log_alexa_xbox"
 ```
 
-Finally, you'll need to have [composer](https://getcomposer.org/download/), the common PHP package manager, available and to run `composer install` once installed. Completing this will bring in the dependent libraries to `site/vendor`.
+Finally, you'll need to have [composer](https://getcomposer.org/download/), the common PHP package manager, available and then to run `composer install`. Completing this will bring in the dependent libraries to `site/vendor`.
 
 IP Address & Xbox Live device ID
 -----
@@ -38,7 +38,7 @@ For the app to connect to your Xbox, 3 things are required:
 Testing
 -----
 
-It's probably a good idea to test the connection first, between the server that runs the app and your Xbox. To do this, you can simply comment out the $Alexa->auth() statement as requests from Alexa will only ever pass this check.
+It's probably a good idea to test the connection first, between the server that runs the app and your Xbox. To do this, you can simply set `.env` DEBUG to `true` so authentication requests from Alexa will be bypassed pass this check.
 
 How it works
 -----

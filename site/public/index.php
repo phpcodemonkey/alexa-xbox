@@ -9,8 +9,10 @@ $alexa = new Alexa();
 $xbox = new Xbox();
 
 // Debug
-$alexa->setLogger($logger);
-$xbox->setLogger($logger);
+if ($_ENV['DEBUG']) {
+    $alexa->setLogger($logger);
+    $xbox->setLogger($logger);
+}
 
 // Set alexa app specific data
 $alexa->setApplicationID($_ENV['APP_ID']);  // Set the application ID for your skill here
@@ -23,8 +25,10 @@ $xbox->setXboxLiveId($_ENV['XBOX_LIVE_ID']);  // Set the Xbox live ID here
 $xbox->setRetryCount($_ENV['XBOX_WOL_RETRIES']);
 
 // Authenticate request and execute
-if ($alexa->auth()) {
-    $logger->debug('Authenticated');
+if ($_ENV['DEBUG'] || $auth = $alexa->auth()) {
+    if (!empty($auth)) {
+        $logger->debug('Authenticated');
+    }
     if ($xbox->ping()) {
         $logger->info('Xbox already on');
         $alexa->setCard('Xbox is already on.');
