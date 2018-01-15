@@ -1,0 +1,28 @@
+{
+    "name": "phpcodemonkey/alexa-xbox",
+    "description": "Switch your XBox One on via Amazon Echo/Alexa",
+    "keywords": ["Amazon", "Alexa", "Echo", "Microsoft", "Xbox"],
+    "minimum-stability": "stable",
+    "type": "project",
+    "require": {
+        "roave/security-advisories": "dev-master",
+        "vlucas/phpdotenv": "^2.4",
+        "monolog/monolog": "^1.23",
+        "filp/whoops": "^2.1"
+    },
+    "authors": [
+        {
+            "name": "Jeremy Coates",
+            "email": "hello+alexaxbox@phpcodemonkey.me.uk"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Alexa\\": "site/src/Alexa",
+            "Xbox\\": "site/src/Xbox"
+        }
+    },
+    "config": {
+        "vendor-dir": "site/vendor"
+    }
+}
