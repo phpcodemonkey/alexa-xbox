@@ -6,14 +6,22 @@ This is an application for use with Amazon Alexa in order to turn your Xbox on u
 Install
 -----
 
-When setting up an Alexa app, you can specify a secure URL where these files should be placed. The only file you will need to edit is the index.php file.
+When setting up an Alexa app, you can specify a secure URL where these files should be placed. The only file you will need to edit is to copy `site/includes/.env-dist` to your own file `site/includes/.env` file.
 
-``` php
-$Alexa->setApplicationID("amzn1.ask.skill.12345678-1234-1234-1234-123456789123");  // Set the application ID for your skill here
-$Alexa->setApplicationName("Xbox On");  // Change this to whatever you are calling your app
+```ini
+APP_ID=amzn1.ask.skill.12345678-1234-1234-1234-123456789123
+APP_NAME="Xbox Control"
 
-$Xbox->setIPAddress("123.456.654.321");  // Set the public IP address of your Xbox here
-$Xbox->setXboxLiveID("ABCD1234ABCD1234");  // Set the Xbox live ID here
+IP_ADDRESS=123.456.654.321 # Current public IP address
+XBOX_LIVE_ID=ABCD1234ABCD1234 # Xbox -> Settings -> System -> Console Info -> Xbox Live device ID
+```
+
+Additionally, you will need to ensure the `site/logs` folder is writable by your web server.
+If you wish to have Slack integration, you can edit the `.env` entries with the relevant details:
+
+```ini
+SLACK_API_TOKEN=""
+SLACK_CHANNEL="#log_alexa_xbox"
 ```
 
 IP Address & Xbox Live device ID
@@ -23,7 +31,7 @@ For the app to connect to your Xbox, 3 things are required:
 
 1. Your router must forward port 5050 to your Xbox.
 2. As your Xbox will be turned on remotely, the public IP address for your Xbox is needed.
-3. The Xbox Live device ID. On your Xbox: All settings > System > Console info & updates.
+3. The Xbox Live device ID. On your Xbox: All settings > System > Console Info > Xbox Live device ID.
  
 Testing
 -----
