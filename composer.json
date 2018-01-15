@@ -1,7 +1,7 @@
 {
     "name": "phpcodemonkey/alexa-xbox",
     "description": "Switch your XBox One on via Amazon Echo/Alexa",
-    "keywords": ["Amazon", "Alexa", "Echo", "Microsoft", "Xbox"],
+    "keywords": ["Amazon", "Alexa", "Echo", "Microsoft", "Xbox", "WOL", "Wake on Lan"],
     "minimum-stability": "stable",
     "type": "project",
     "require": {
