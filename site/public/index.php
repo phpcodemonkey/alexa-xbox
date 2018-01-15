@@ -8,6 +8,10 @@ include dirname(__DIR__) . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATO
 $alexa = new Alexa();
 $xbox = new Xbox();
 
+// Debug
+$alexa->setLogger($logger);
+$xbox->setLogger($logger);
+
 // Set alexa app specific data
 $alexa->setApplicationID($_ENV['APP_ID']);  // Set the application ID for your skill here
 $alexa->setApplicationName($_ENV['APP_NAME']);  // Change this to whatever you are calling your app
@@ -20,16 +24,20 @@ $xbox->setRetryCount($_ENV['XBOX_WOL_RETRIES']);
 
 // Authenticate request and execute
 if ($alexa->auth()) {
+    $logger->debug('Authenticated');
     if ($xbox->ping()) {
+        $logger->info('Xbox already on');
         $alexa->setCard('Xbox is already on.');
         $alexa->setReprompt('');
         $alexa->setOutputSpeech('Your Xbox has already been turned on.');
     } else {
         if ($xbox->switchOn()) {
+            $logger->info('Xbox turned on');
             $alexa->setCard('Xbox is now on.');
             $alexa->setReprompt('');
             $alexa->setOutputSpeech('Your Xbox is now turned on.');
         } else {
+            $logger->info('Xbox not turned on');
             $alexa->setCard('Xbox couldn\'t be turned on.');
             $alexa->setReprompt('');
             $alexa->setOutputSpeech('Your Xbox could not be turned on. Please try again.');

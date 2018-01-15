@@ -2,6 +2,8 @@
 
 namespace Alexa;
 
+use Monolog\Logger;
+
 /**
  * Class Alexa
  * @package Alexa
@@ -17,6 +19,10 @@ class Alexa
     private $card = '';
     private $rePrompt = '';
     private $outputSpeech = '';
+    /**
+     * @var Logger
+     */
+    private $logger;
 
     /**
      * Alexa constructor.
@@ -26,6 +32,13 @@ class Alexa
         $this->getInput();
     }
 
+    /**
+     * @param Logger $logger
+     */
+    public function setLogger(Logger $logger)
+    {
+        $this->logger = $logger;
+    }
     /**
      *
      */
@@ -142,8 +155,11 @@ class Alexa
         "shouldEndSession": true
     }
 }
-
 EOF;
+
+        if ($this->logger) {
+            $this->logger->debug(__METHOD__ . ' Response', ['output' => $output]);
+        }
 
         echo $output;
     }

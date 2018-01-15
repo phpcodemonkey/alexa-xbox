@@ -2,6 +2,8 @@
 
 namespace Xbox;
 
+use Monolog\Logger;
+
 /**
  * Class Xbox
  * @package Xbox
@@ -13,6 +15,16 @@ class Xbox
     private $ipAddress = '';
     private $xboxLiveId = '';
     private $retries = 3;
+
+    /**
+     * @var Logger
+     */
+    private $logger;
+
+    public function setLogger(Logger $logger)
+    {
+        $this->logger = $logger;
+    }
 
     /**
      * @param $port
@@ -89,6 +101,11 @@ class Xbox
 
         sleep(1);
 
+        if ($this->logger) {
+            $this->logger->debug(__METHOD__ . ' Wake Packet', ['header' => $header, 'data' => $data]);
+            $this->logger->debug(__METHOD__ . ' Status', ['length' => $status]);
+        }
+
         if ($status) {
             return true;
         }
@@ -128,6 +145,11 @@ class Xbox
         $buffer = '';
 
         $bytes = socket_recv($socket, $buffer, 2048, MSG_WAITALL);
+
+        if ($this->logger) {
+            $this->logger->debug(__METHOD__ . ' Sent', ['data' => $data]);
+            $this->logger->debug(__METHOD__ . ' Received', ['bytes' => $bytes, 'buffer' => $buffer]);
+        }
 
         return $bytes && ($buffer !== null);
     }
