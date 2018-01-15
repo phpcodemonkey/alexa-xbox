@@ -38,7 +38,7 @@ For the app to connect to your Xbox, 3 things are required:
 Testing
 -----
 
-It's probably a good idea to test the connection first, between the server that runs the app and your Xbox. To do this, you can simply set `.env` DEBUG to `true` so authentication requests from Alexa will be bypassed pass this check.
+It's probably a good idea to test the connection first, between the server that runs the app and your Xbox. To do this, you can simply set `.env` DEBUG to `true` so authentication requests from Alexa will be bypassed by this feature.
 
 How it works
 -----
