@@ -24,6 +24,8 @@ SLACK_API_TOKEN=""
 SLACK_CHANNEL="#log_alexa_xbox"
 ```
 
+Finally, you'll need to have, the common PHP package manager, [composer](https://getcomposer.org/download/) available and to run `composer install` once installed. Completing this will bring in the dependent libraries to `site/vendor`.
+
 IP Address & Xbox Live device ID
 -----
 
