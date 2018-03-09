@@ -1,12 +1,13 @@
 <?php
 
 use Dotenv\Dotenv;
-use Monolog\Logger;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\SlackHandler;
-use Whoops\Run;
-use Whoops\Handler\PrettyPageHandler;
+use Monolog\Logger;
 use Whoops\Handler\JsonResponseHandler;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
 
 include_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
@@ -22,15 +23,26 @@ if (!array_key_exists('MONOLOG_NAME', $_ENV) || !array_key_exists('MONOLOG_FILE'
 // Set up Monolog
 $logger = new Logger($_ENV['MONOLOG_NAME']);
 
-// Set up the Monolog handlers
-$handlers = [
-    new RotatingFileHandler(
-        dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . $_ENV['MONOLOG_FILE']
-    )
-];
+$formatter = new LineFormatter(
+    isset($_ENV['MONOLOG_LINE_FORMATTER']) ? $_ENV['MONOLOG_LINE_FORMATTER'] . PHP_EOL : null
+);
 
-if (array_key_exists('SLACK_API_TOKEN', $_ENV) && array_key_exists('SLACK_CHANNEL', $_ENV) &&
-    array_key_exists('SLACK_USER', $_ENV)) {
+// Set up the Monolog handlers
+$rotating = new RotatingFileHandler(
+    dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . $_ENV['MONOLOG_FILE'],
+    $_ENV['MONOLOG_MAX_FILES']
+);
+$rotating->setFormatter($formatter);
+
+$handlers = [$rotating];
+
+if (array_key_exists('SLACK_API_TOKEN', $_ENV) &&
+    array_key_exists('SLACK_CHANNEL', $_ENV) &&
+    array_key_exists('SLACK_USER', $_ENV) &&
+    !empty($_ENV['SLACK_API_TOKEN']) &&
+    !empty($_ENV['SLACK_CHANNEL']) &&
+    !empty($_ENV['SLACK_USER'])
+) {
     $slack_log_level = Logger::DEBUG;
     $levels = Logger::getLevels();
     if (array_key_exists('SLACK_LOG_LEVEL', $_ENV) && array_key_exists($_ENV['SLACK_LOG_LEVEL'], $levels)) {
@@ -69,7 +81,7 @@ $whoops->pushHandler(
         /* @var $exception \Exception */
         $logger->log(
             Logger::ERROR,
-            $logger->getName().': '.$exception->getMessage(),
+            $logger->getName() . ': ' . $exception->getMessage(),
             [
                 'code' => $exception->getCode(),
                 'file' => $exception->getFile(),
