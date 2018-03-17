@@ -23,9 +23,8 @@ if (!array_key_exists('MONOLOG_NAME', $_ENV) || !array_key_exists('MONOLOG_FILE'
 // Set up Monolog
 $logger = new Logger($_ENV['MONOLOG_NAME']);
 
-$formatter = new LineFormatter(
-    isset($_ENV['MONOLOG_LINE_FORMATTER']) ? $_ENV['MONOLOG_LINE_FORMATTER'] . PHP_EOL : null
-);
+$lineFormatter = isset($_ENV['MONOLOG_LINE_FORMATTER']) ? $_ENV['MONOLOG_LINE_FORMATTER'] . PHP_EOL : null;
+$formatter = new LineFormatter($lineFormatter);
 
 // Set up the Monolog handlers
 $rotating = new RotatingFileHandler(
