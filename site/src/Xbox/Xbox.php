@@ -99,7 +99,7 @@ class Xbox
 
         $status = socket_send($socket, $header . $data, strlen($header . $data), MSG_EOR);
 
-        sleep(1);
+        usleep(500000);
 
         if ($this->logger) {
             $this->logger->debug(__METHOD__ . ' Wake Packet', ['header' => $header, 'data' => $data]);
@@ -124,7 +124,7 @@ class Xbox
             }
         }
 
-        sleep(1);
+        usleep(500000);
 
         // One last check!
         return $this->ping();
